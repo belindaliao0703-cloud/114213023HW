@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS 作業報告</title>
+    <style>
+        :root {
+            --primary-color: #232f3e;
+            --accent-color: #ff9900;
+            --bg-color: #f4f6f8;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --border-color: #e0e0e0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 30px;
+            border-radius: 8px 8px 0 0;
+            border-bottom: 4px solid var(--accent-color);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .question-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-top: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        .question-title {
+            color: var(--primary-color);
+            font-size: 1.25rem;
+            margin-top: 0;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 8px;
+            display: inline-block;
+        }
+
+        ul, ol {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background-color: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: "Courier New", Courier, monospace;
+            color: #d63384;
+        }
+
+        .url-breakdown {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .url-breakdown th, .url-breakdown td {
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            text-align: left;
+        }
+
+        .url-breakdown th {
+            background-color: #f8f9fa;
+        }
+
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>AWS 作業報告</h1>
+    </header>
+
+    <!-- 問題 1 -->
+    <div class="question-card">
+        <h2 class="question-title">1. 何謂憑證、HTTPS、HTTP、Port</h2>
+        <ul>
+            <li><strong>HTTP (HyperText Transfer Protocol)：</strong> 全名為HyperText Transfer Protocol，是全球資訊網（WWW）數據通訊的基礎，主要用於在瀏覽器和網站伺服器之間傳遞數據。因為http是以明文方式發送內容，任何人只要在中途攔截或監聽，像是在同一個公共 Wi-Fi 網路下，都能輕易讀取傳輸的報文。因此它非常不適合用來傳輸敏感資訊。因為安全度低，連線速度相對更快，資源消耗也相對更少。</li>
+            <li><strong>HTTPS (HTTP Secure)：</strong> https全名為Hypertext Transfer Protocol Secure，是http的安全升級版。它在http的基礎上加入了 SSL/TLS 加密協定，用來加密數據封包並驗證網站伺服器的身分。 它的運作方式就像是要傳遞的訊息鎖進保險箱，，即使有人在半路攔截了這個保險箱，沒有鑰匙也不能看到裡面的內容。是搜尋引擎的優先收錄，連線速度較慢，資源消耗較高。</li>
+            <li><strong>憑證 (SSL/TLS Certificate)：</strong> 就像是數位世界裡的一張身分證或保證書。它主要包含了身分驗證及資料完整性兩大功能。它能讓在你看不到對發的前提下也能確認對方的身分，證明了這東西確實是由某個特定的人所發行，並且內容並沒有被任意修改或竄改。此外，它確保資料傳輸的安全，在真假難辨的網路環境中，為使用者們提供一層重要的安全保障，更是確保開發者權益的重要機制。</li>
+            <li><strong>Port (連接埠)：</strong> Port 通常被稱為連接埠，它是一個基於軟體建立的虛擬端點。
+當各種網路封包透過IP傳送到電腦時，它負責將這些雜亂無章的資料進行分類，並精準地派發給對應的應用程式或服務。
+</li>
+        </ul>
+    </div>
+
+    <!-- 問題 2 -->
+    <div class="question-card">
+        <h2 class="question-title">2. Inbound、Outbound 防火牆是什麼，怎麼設定</h2>
+        <p>防火牆主要依據流量的方向來控管網路存取：</p>
+        <ul>
+            <li><strong>Inbound (入站防火牆)：</strong> 控制「外部流量進入內部網路/伺服器」的規則（例如：允許外部使用者連線至網站的 80/443 Port）。預設通常為完全阻擋。</li>
+            <li><strong>Outbound (出站防火牆)：</strong> 控制「伺服器主動連線至外部網路」的規則（例如：伺服器下載套件更新）。預設通常為允許通過。</li>
+        </ul>
+        <p><strong>設定方式（以 AWS Security Group 為例）：</strong></p>
+        <ol>
+            <li>進入 AWS EC2 主控台，選擇目標執行個體 (Instance) 或安全性群組 (Security Group)。</li>
+            <li>點擊 <strong>Edit inbound rules</strong> (編輯入站規則) 或 <strong>Edit outbound rules</strong> (編輯出站規則)。</li>
+            <li>新增規則：指定 <strong>Type</strong>（如 HTTP/Custom TCP）、<strong>Port Range</strong>（如 80 或 22）與 <strong>Source</strong>（來源 IP，如 0.0.0.0/0 表示允許任何來源）。</li>
+            <li>儲存變更即可即時生效。</li>
+        </ol>
+    </div>
+
+    <!-- 問題 3 -->
+    <div class="question-card">
+        <h2 class="question-title">3. 什麼是 CIDR？</h2>
+        <p><strong>CIDR (Classless Inter-Domain Routing，無類別域間路由)</strong> 是一種靈活分配 IP 位址與進行網路路由的方法，解決了早期 IP 位址劃分浪費的問題。</p>
+
+        <p><strong>語法表示：</strong> <code>IP 位址 / 網路位元數</code></p>
+        <p>例如：<code>192.168.1.0/24</code></p>
+        <ul>
+            <li><code>/24</code> 表示前 24 個位元為網路識別號，剩下 $32 - 24 = 8$ 位元可用於分配主機。</li>
+            <li>該區段總共有 $2^8 = 256$ 個 IP 位址（範圍為 <code>192.168.1.0</code> 到 <code>192.168.1.255</code>）。</li>
+            <li>在 AWS 中常用於規劃 VPC 與 Subnet 的網路規模（例如 <code>10.0.0.0/16</code>）。</li>
+        </ul>
+    </div>
+
+    <!-- 問題 4 -->
+    <div class="question-card">
+        <h2 class="question-title">4. 什麼是 DNS？什麼是 IP？什麼是域名？什麼是 URL？</h2>
+        <ul>
+            <li><strong>IP (Internet Protocol Address)：</strong> 網路上設備的數位實體地址（如 <code>140.128.x.x</code>），電腦間透過 IP 互相連線。</li>
+            <li><strong>域名 (Domain Name)：</strong> 為了方便人類記憶而設計的文字名稱（如 <code>www.ncnu.edu.tw</code>），替代難記的數字 IP。</li>
+            <li><strong>DNS (Domain Name System)：</strong> 網域名稱系統，就像是網路界的「電話簿」。負責將人類看得懂的域名解析翻譯成電腦看得懂的 IP 位址。</li>
+            <li><strong>URL (Uniform Resource Locator)：</strong> 統一資源定位器，即完整的「網址」。用來精確指定網路上特定資源（網頁、圖片、檔案）的位置與存取方式。</li>
+        </ul>
+    </div>
+
+    <!-- 問題 5 -->
+    <div class="question-card">
+        <h2 class="question-title">5. URL 解析範例</h2>
+        <p>解析目標：<code>https://www.ncnu.edu.tw:1234/class/upload.php?file=abc</code>[cite: 1]</p>
+
+        <table class="url-breakdown">
+            <thead>
+                <tr>
+                    <th>URL 組成元素</th>
+                    <th>對應內容</th>
+                    <th>詳細說明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>通訊協定 (Protocol)</strong></td>
+                    <td><code>https://</code></td>
+                    <td>使用 SSL/TLS 加密傳輸的網頁通訊協定。</td>
+                </tr>
+                <tr>
+                    <td><strong>主機域名 (Domain)</strong></td>
+                    <td><code>www.ncnu.edu.tw</code></td>
+                    <td>伺服器的域名（國立暨南國際大學）。</td>
+                </tr>
+                <tr>
+                    <td><strong>連接埠 (Port)</strong></td>
+                    <td><code>1234</code></td>
+                    <td>自訂的服務 Port 號（預設 HTTPS 為 443，此處指定使用 1234 連線）。</td>
+                </tr>
+                <tr>
+                    <td><strong>資源路徑 (Path)</strong></td>
+                    <td><code>/class/upload.php</code></td>
+                    <td>伺服器上的檔案路徑，指向 class 目錄下的 upload.php 程式。</td>
+                </tr>
+                <tr>
+                    <td><strong>查詢參數 (Query String)</strong></td>
+                    <td><code>?file=abc</code></td>
+                    <td>帶給伺服器後端程式處理的參數，變數名稱為 <code>file</code>，其值為 <code>abc</code>。</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
